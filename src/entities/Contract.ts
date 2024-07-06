@@ -1,9 +1,10 @@
-import { Column, OneToMany, PrimaryGeneratedColumn } from "typeorm"
-import { Payment } from "../Payment/Payment"
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import { Payment } from "./Payment"
 
+@Entity("contracts")
 export class Contract {
     @PrimaryGeneratedColumn("uuid")
-    id: number
+    id: string
 
     @Column()
     document_number: string

@@ -1,7 +1,7 @@
 import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
-import { Contract } from "../Contract/Contract";
+import { Contract } from "./Contract";
 
-@Entity()
+@Entity("payments")
 export class Payment {
     @PrimaryGeneratedColumn("uuid")
     id: string;  // Use string para uuid
