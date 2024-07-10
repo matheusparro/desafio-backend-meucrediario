@@ -1,24 +1,24 @@
-// index.js
 import express from 'express';
 import { routes } from './routes';
-import bodyParser from 'body-parser';
+import { AppDataSource } from './data-source';
 
 const app = express();
+const PORT = 3000;
 
 // Middleware para interpretar o corpo das requisições como JSON
 app.use(express.json());
 
-// Middleware para interpretar o corpo das requisições como JSON
-app.use(bodyParser.json({ limit: '200mb' })); // Ajuste o limite conforme necessário
+AppDataSource.initialize()
+    .then(() => {
+        console.log("Data Source has been initialized!");
 
-// Middleware para interpretar os corpos das requisições codificados em URL
-app.use(bodyParser.urlencoded({ extended: true }));
+        // Middleware para utilizar as rotas definidas no arquivo routes.js
+        app.use(routes);
 
-// Middleware para utilizar as rotas definidas no arquivo routes.js
-app.use(routes);
-
-const PORT = 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error("Error during Data Source initialization:", err);
+    });

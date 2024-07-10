@@ -1,11 +1,11 @@
 
-import { IPaymentDTO } from "../../Payment/dto/IPaymentDTO";
-import { IsArray, IsDateString, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { IPaymentDTO } from "./IPaymentDTO";
+import { IsArray, IsNumber, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export interface IContractRequestDTO {
     document_number: string;
-    date: string;
+    date: Date;
     total_value: number;
     down_payment: number;
     financed_amount: number;
@@ -15,7 +15,7 @@ export interface IContractRequestDTO {
 export interface IContractResponseDTO {
     id: string;
     document_number: string;
-    date: string;
+    date: Date;
     total_value: number;
     down_payment: number;
     financed_amount: number;
@@ -27,11 +27,9 @@ export class ParcelaDTO {
   @IsNumber()
   valorvencimento: number;
 
-  @IsDateString()
-  datavencimento: string;
+  datavencimento: Date;
 
-  @IsDateString()
-  dataultimopagamento: string;
+  dataultimopagamento: Date;
 
   @IsNumber()
   totalpago: number;
@@ -49,8 +47,7 @@ export class ContratoDTO {
   @IsString()
   contrato: string;
 
-  @IsDateString()
-  data: string;
+  data: Date;
 
   @IsNumber()
   valortotal: number;

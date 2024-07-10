@@ -14,3 +14,14 @@ export const AppDataSource = new DataSource({
     entities: [`${__dirname}/**/entities/*.{ts,js}`],
     migrations: [`${__dirname}/**/migration/*.{ts,js}`],
 });
+
+export class ColumnNumericTransformer {
+    to(data: number): number {
+      return data;
+    }
+    from(data: string): number {
+      return parseFloat(data);
+    }
+  }
+//roda migration yarn typeorm-ts-node-commonjs migration:run -d src/data-source.ts
+// yarn run typeorm migration:generate ./src/migration/changeIntegerToDecimalContract -d ./src/data-source.ts

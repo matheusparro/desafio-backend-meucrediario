@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 import { Payment } from "./Payment"
+import { ColumnNumericTransformer } from "../data-source"
 
 @Entity("contracts")
 export class Contract {
@@ -10,15 +11,27 @@ export class Contract {
     document_number: string
 
     @Column()
-    date: string
+    date: Date
 
-    @Column()
+    @Column('numeric', {
+        precision: 10,
+        scale: 2,
+        transformer: new ColumnNumericTransformer(),
+      })
     total_value: number
 
-    @Column()
+    @Column('numeric', {
+        precision: 10,
+        scale: 2,
+        transformer: new ColumnNumericTransformer(),
+      })
     down_payment: number
 
-    @Column()
+    @Column('numeric', {
+        precision: 10,
+        scale: 2,
+        transformer: new ColumnNumericTransformer(),
+      })
     financed_amount: number
 
     @OneToMany(() => Payment, payment => payment.contract)

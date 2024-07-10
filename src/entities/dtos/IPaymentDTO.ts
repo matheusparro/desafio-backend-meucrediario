@@ -8,8 +8,8 @@ export interface IPaymentDTO {
 
 export interface Parcela {
     valorvencimento: number;
-    datavencimento: string;
-    dataultimopagamento: string;
+    datavencimento: Date;
+    dataultimopagamento: Date;
     totalpago: number;
     capitalaberto: number;
   }
