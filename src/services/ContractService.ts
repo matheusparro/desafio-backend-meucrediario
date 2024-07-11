@@ -50,7 +50,7 @@ export class ContractService {
   }
 
   async mostValueMonthOpen({contractIds}:RequestContractPaymentDTO): Promise<ResponseContractPaytmentsDTO> {
-    const groupedContracts = await this.groupContractsByMonth();
+    const groupedContracts = await this.groupContractsByMonth(contractIds);
     const payments = await paymentRepository.find();
     let lastValue = 0;
     Object.keys(groupedContracts).forEach(monthYear => {
@@ -102,7 +102,6 @@ export class ContractService {
             queryOptions.take = size;
         }
 
-        console.log('queryOptions:', queryOptions); // Verifique os parâmetros de paginação
 
         const [contracts, totalCount] = await contractRepository.findAndCount(queryOptions);
         const totalPage = Math.ceil(totalCount / size); // Calcular o número total de páginas
@@ -152,10 +151,6 @@ export class ContractService {
     }
   }
 
-
-
-
-
   private async groupContractsByMonth(contractIds?:string[]): Promise<{ month: number, year: number, totalValue: number }[]> {
     const whereCondition = contractIds ? { id: In(contractIds) } : {};
 
@@ -192,5 +187,4 @@ export class ContractService {
     });
     return groupedContracts;
   }
-
 }

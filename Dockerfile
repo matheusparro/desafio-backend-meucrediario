@@ -4,12 +4,12 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN yarn install
 
 COPY . .
 
-RUN npm run build
+RUN yarn build
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npm run migration:run && npm run start:dev"]
+CMD ["sh", "-c", "yarn typeorm-ts-node-commonjs migration:run -d src/data-source.ts && yarn start"]
