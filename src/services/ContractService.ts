@@ -1,18 +1,18 @@
-import { In } from "typeorm";
-import { Contract } from "../entities/Contract";
-import { ContratosDataDTO, IContractPaginationDTO } from "../entities/dtos/ContractDTOS";
-import { Payment } from "../entities/Payment";
-import { contractRepository } from "../repositories/Contract";
-import { paymentRepository } from "../repositories/Payment";
-import { ResponseContractPaytmentsDTO } from "../entities/dtos/ResponseContractPaytmentsDTO";
-import { RequestContractPaymentDTO } from "../entities/dtos/RequestContractPaymentDTO";
+import { In } from 'typeorm';
+import { Contract } from '../entities/Contract';
+import { ContratosDataDTO, IContractPaginationDTO } from '../entities/dtos/ContractDTOS';
+import { Payment } from '../entities/Payment';
+import { contractRepository } from '../repositories/Contract';
+import { paymentRepository } from '../repositories/Payment';
+import { ResponseContractPaytmentsDTO } from '../entities/dtos/ResponseContractPaytmentsDTO';
+import { RequestContractPaymentDTO } from '../entities/dtos/RequestContractPaymentDTO';
 
 export class ContractService {
   async execute(contratosDTO: ContratosDataDTO): Promise<void> {
-      // Criar um novo contrato   
+      // Criar um novo contrato
     for (const contratoDTO of contratosDTO.contratos) {
         // Criar nova instância do contrato
-        
+
         let contract = await contractRepository.findOne({where:{
             document_number: contratoDTO.contrato
         }});
@@ -35,10 +35,10 @@ export class ContractService {
           payment.outstanding_principal = parcela.capitalaberto;
           return payment;
         });
-  
+
         // Salvar o contrato e seus pagamentos no banco de dados
         await contractRepository.save(contract);
-        
+
         // Salvar pagamentos separados e adicionar ao contrato
         contract.payments = await Promise.all(
           contract.payments.map(async payment => {
@@ -49,7 +49,7 @@ export class ContractService {
       }
   }
 
-  async mostValueMonthOpen({contractIds}:RequestContractPaymentDTO): Promise<ResponseContractPaytmentsDTO> { 
+  async mostValueMonthOpen({contractIds}:RequestContractPaymentDTO): Promise<ResponseContractPaytmentsDTO> {
     const groupedContracts = await this.groupContractsByMonth();
     const payments = await paymentRepository.find();
     let lastValue = 0;
@@ -84,17 +84,17 @@ export class ContractService {
     const response:ResponseContractPaytmentsDTO = {
       mesAno: mesMaxValor,
       valorMaximo: maxValor
-    }
-    return response
-  
+    };
+    return response;
+
   }
 
   async findAll(page?: number, size?: number): Promise<IContractPaginationDTO> {
     try {
         const queryOptions: any = {
             order: {
-                date: 'ASC',
-            },
+                date: 'ASC'
+            }
         };
 
         if (page !== undefined && size !== undefined && typeof page === 'number' && typeof size === 'number') {
@@ -109,7 +109,7 @@ export class ContractService {
 
         const contractsPaginationDto: IContractPaginationDTO = {
             contracts,
-            totalPage,
+            totalPage
         };
 
         return contractsPaginationDto;
@@ -124,7 +124,7 @@ export class ContractService {
     try {
       const contract = await contractRepository.findOne({
         where: { id },
-        relations: ['payments'],
+        relations: ['payments']
       });
       return contract;
     } catch (error) {
@@ -138,12 +138,12 @@ export class ContractService {
       const payments = await paymentRepository.find({
         where: { contract: {
           id
-        },
-        
+        }
+
        },
        order: {
-        due_date: 'ASC',
-      },
+        due_date: 'ASC'
+      }
       });
       return payments;
     } catch (error) {
@@ -152,18 +152,18 @@ export class ContractService {
     }
   }
 
-  
-  
-  
-  
+
+
+
+
   private async groupContractsByMonth(contractIds?:string[]): Promise<{ month: number, year: number, totalValue: number }[]> {
     const whereCondition = contractIds ? { id: In(contractIds) } : {};
-  
+
     const contracts = await contractRepository.find({
       where: whereCondition,
       order: {
-        date: 'ASC',
-      },
+        date: 'ASC'
+      }
     });
 
     // Agrupar contratos por mês/ano e calcular o total de valores

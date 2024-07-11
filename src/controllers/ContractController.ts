@@ -18,7 +18,7 @@ export class ContractController {
     } catch (errors) {
       return res.status(400).json({
         message: 'Validation failed',
-        errors,
+        errors
       });
     }
   }
@@ -35,7 +35,7 @@ export class ContractController {
     } catch (error) {
       return res.status(400).json({
         message: error.message,
-        error,
+        error
       });
     }
   }
@@ -43,19 +43,19 @@ export class ContractController {
   async findAll(req: Request, res: Response): Promise<Response> {
     try {
       let { page, size, document_number } = req.query;
-  
+
       page = page ? parseInt(page as string, 10) : 1; // Converte para número e define valor padrão 1 se não estiver definido
       size = size ? parseInt(size as string, 10) : 10; // Converte para número e define valor padrão 10 se não estiver definido
       document_number = document_number as string | undefined; // Mantém como string ou undefined se não estiver definido
-  
+
       const contractService = new ContractService();
       const contracts = await contractService.findAll(page, size);
-  
+
       return res.status(200).json(contracts);
     } catch (error) {
       return res.status(400).json({
         message: error.message,
-        error,
+        error
       });
     }
   }
@@ -63,15 +63,15 @@ export class ContractController {
   async findPaymentsByContractId(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
-  
+
       const contractService = new ContractService();
       const payments = await contractService.findPaymentsByContractId(id);
-  
+
       return res.status(200).json(payments);
     } catch (error) {
       return res.status(400).json({
         message: error.message,
-        error,
+        error
       });
     }
   }

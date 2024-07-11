@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class ChangeIntegerToDecimalContract1720380750450 implements MigrationInterface {
-    name = 'ChangeIntegerToDecimalContract1720380750450'
+    name = 'ChangeIntegerToDecimalContract1720380750450';
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "contracts" DROP COLUMN "total_value"`);

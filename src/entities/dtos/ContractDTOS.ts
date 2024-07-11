@@ -1,8 +1,8 @@
 
-import { IPaymentDTO } from "./IPaymentDTO";
+import { IPaymentDTO } from './IPaymentDTO';
 import { IsArray, IsNumber, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Contract } from "../Contract";
+import { Contract } from '../Contract';
 
 export interface IContractRequestDTO {
     document_number: string;

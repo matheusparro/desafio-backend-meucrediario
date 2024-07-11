@@ -11,7 +11,7 @@ app.use(express.json());
 
 AppDataSource.initialize()
     .then(() => {
-        console.log("Data Source has been initialized!");
+        console.log('Data Source has been initialized!');
         app.use(cors());
         // Middleware para utilizar as rotas definidas no arquivo routes.js
         app.use(routes);
@@ -21,5 +21,5 @@ AppDataSource.initialize()
         });
     })
     .catch((err) => {
-        console.error("Error during Data Source initialization:", err);
+        console.error('Error during Data Source initialization:', err);
     });

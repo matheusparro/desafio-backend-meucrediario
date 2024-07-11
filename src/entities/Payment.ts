@@ -1,16 +1,16 @@
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from "typeorm";
-import { Contract } from "./Contract";
-import { ColumnNumericTransformer } from "../data-source";
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne } from 'typeorm';
+import { Contract } from './Contract';
+import { ColumnNumericTransformer } from '../data-source';
 
-@Entity("payments")
+@Entity('payments')
 export class Payment {
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryGeneratedColumn('uuid')
     id: string;  // Use string para uuid
 
     @Column('numeric', {
         precision: 10,
         scale: 2,
-        transformer: new ColumnNumericTransformer(),
+        transformer: new ColumnNumericTransformer()
       })
     due_amount: number;  // valorvencimento
 
@@ -23,14 +23,14 @@ export class Payment {
     @Column('numeric', {
         precision: 10,
         scale: 2,
-        transformer: new ColumnNumericTransformer(),
+        transformer: new ColumnNumericTransformer()
       })
     total_paid: number;  // totalpago
 
     @Column('numeric', {
         precision: 10,
         scale: 2,
-        transformer: new ColumnNumericTransformer(),
+        transformer: new ColumnNumericTransformer()
       })
     outstanding_principal: number;  // capitalaberto
 
