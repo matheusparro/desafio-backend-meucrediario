@@ -42,17 +42,17 @@ export class ContractController {
 
   async findAll(req: Request, res: Response): Promise<Response> {
     try {
-      let { page, size, document_number } = req.query; // Acessa os parâmetros via req.query
-
-      // Verifica se os parâmetros estão definidos e se não, define valores padrão ou vazios
-      page = page ? parseInt(page as string) : undefined;
-      size = size ? parseInt(size as string) : undefined;
-      document_number = document_number ? document_number as string : undefined;
-
+      let { page, size, document_number } = req.query;
+  
+      // Verifica se os parâmetros estão definidos em req.query
+      page = page ? parseInt(page as string, 10) : 1; // Converte para número e define valor padrão 1 se não estiver definido
+      size = size ? parseInt(size as string, 10) : 10; // Converte para número e define valor padrão 10 se não estiver definido
+      document_number = document_number as string | undefined; // Mantém como string ou undefined se não estiver definido
+  
       const contractService = new ContractService();
-      const response = await contractService.findAll(page, size, document_number);
-
-      return res.status(200).json(response);
+      const contracts = await contractService.findAll(page, size);
+  
+      return res.status(200).json(contracts);
     } catch (error) {
       return res.status(400).json({
         message: error.message,
@@ -60,4 +60,5 @@ export class ContractController {
       });
     }
   }
+  
 }

@@ -1,6 +1,7 @@
 import express from 'express';
 import { routes } from './routes';
 import { AppDataSource } from './data-source';
+import cors from 'cors';
 
 const app = express();
 const PORT = 3000;
@@ -11,7 +12,7 @@ app.use(express.json());
 AppDataSource.initialize()
     .then(() => {
         console.log("Data Source has been initialized!");
-
+        app.use(cors());
         // Middleware para utilizar as rotas definidas no arquivo routes.js
         app.use(routes);
 

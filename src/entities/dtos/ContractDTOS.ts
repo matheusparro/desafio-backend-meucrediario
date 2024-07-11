@@ -2,6 +2,7 @@
 import { IPaymentDTO } from "./IPaymentDTO";
 import { IsArray, IsNumber, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { Contract } from "../Contract";
 
 export interface IContractRequestDTO {
     document_number: string;
@@ -65,3 +66,9 @@ export class ContratosDataDTO {
   @Type(() => ContratoDTO)
   contratos: ContratoDTO[];
 }
+
+export interface IContractPaginationDTO {
+  contracts: Contract[];
+  totalPage: number;
+}
+

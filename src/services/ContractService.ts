@@ -1,6 +1,6 @@
 import { In } from "typeorm";
 import { Contract } from "../entities/Contract";
-import { ContratosDataDTO } from "../entities/dtos/ContractDTOS";
+import { ContratosDataDTO, IContractPaginationDTO } from "../entities/dtos/ContractDTOS";
 import { Payment } from "../entities/Payment";
 import { contractRepository } from "../repositories/Contract";
 import { paymentRepository } from "../repositories/Payment";
@@ -89,23 +89,36 @@ export class ContractService {
   
   }
 
-  async findAll(page?: number, size?: number, document_number?: string): Promise<Contract[]> {
-    const whereCondition: any = document_number ? { document_number } : {};
-    const queryOptions: any = {
-      where: whereCondition,
-      order: {
-        date: 'ASC',
-      },
-    };
+  async findAll(page?: number, size?: number): Promise<IContractPaginationDTO> {
+    try {
+      const queryOptions: any = {
+        order: {
+          date: 'ASC',
+        },
+      };
   
-    if (page !== undefined && size !== undefined && typeof page === 'number' && typeof size === 'number') {
-      queryOptions.skip = page * size;
-      queryOptions.take = size;
+      if (page !== undefined && size !== undefined && typeof page === 'number' && typeof size === 'number') {
+        queryOptions.skip = (page - 1) * size;
+        queryOptions.take = size;
+      }
+  
+      console.log('queryOptions:', queryOptions); // Verifique os parâmetros de paginação
+  
+      const contracts = await contractRepository.find(queryOptions);
+
+      const contractsPaginationDto:IContractPaginationDTO = {
+        contracts: contracts,
+        totalPage: contracts.length/size
+        
+      }
+      return contractsPaginationDto;
+    } catch (error) {
+      console.error('Error in findAll:', error);
+      throw error; // Rejeitar o erro ou tratá-lo conforme a estratégia de tratamento de erros da sua aplicação
     }
-  
-    const contracts = await contractRepository.find(queryOptions);
-    return contracts;
   }
+  
+  
   
   
   private async groupContractsByMonth(contractIds?:string[]): Promise<{ month: number, year: number, totalValue: number }[]> {
