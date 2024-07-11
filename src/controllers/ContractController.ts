@@ -60,5 +60,21 @@ export class ContractController {
       });
     }
   }
+
+  async findPaymentsByContractId(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params;
+  
+      const contractService = new ContractService();
+      const payments = await contractService.findPaymentsByContractId(id);
+  
+      return res.status(200).json(payments);
+    } catch (error) {
+      return res.status(400).json({
+        message: error.message,
+        error,
+      });
+    }
+  }
   
 }

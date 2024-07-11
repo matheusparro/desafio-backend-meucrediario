@@ -91,32 +91,67 @@ export class ContractService {
 
   async findAll(page?: number, size?: number): Promise<IContractPaginationDTO> {
     try {
-      const queryOptions: any = {
-        order: {
-          date: 'ASC',
-        },
-      };
-  
-      if (page !== undefined && size !== undefined && typeof page === 'number' && typeof size === 'number') {
-        queryOptions.skip = (page - 1) * size;
-        queryOptions.take = size;
-      }
-  
-      console.log('queryOptions:', queryOptions); // Verifique os parâmetros de paginação
-  
-      const contracts = await contractRepository.find(queryOptions);
+        const queryOptions: any = {
+            order: {
+                date: 'ASC',
+            },
+        };
 
-      const contractsPaginationDto:IContractPaginationDTO = {
-        contracts: contracts,
-        totalPage: contracts.length/size
-        
-      }
-      return contractsPaginationDto;
+        if (page !== undefined && size !== undefined && typeof page === 'number' && typeof size === 'number') {
+            queryOptions.skip = (page - 1) * size;
+            queryOptions.take = size;
+        }
+
+        console.log('queryOptions:', queryOptions); // Verifique os parâmetros de paginação
+
+        const [contracts, totalCount] = await contractRepository.findAndCount(queryOptions);
+        const totalPage = Math.ceil(totalCount / size); // Calcular o número total de páginas
+
+        const contractsPaginationDto: IContractPaginationDTO = {
+            contracts,
+            totalPage,
+        };
+
+        return contractsPaginationDto;
     } catch (error) {
-      console.error('Error in findAll:', error);
+        console.error('Error in findAll:', error);
+        throw error; // Rejeitar o erro ou tratá-lo conforme necessário
+    }
+}
+
+
+  async findById(id: string): Promise<Contract | undefined> {
+    try {
+      const contract = await contractRepository.findOne({
+        where: { id },
+        relations: ['payments'],
+      });
+      return contract;
+    } catch (error) {
+      console.error('Error in findById:', error);
       throw error; // Rejeitar o erro ou tratá-lo conforme a estratégia de tratamento de erros da sua aplicação
     }
   }
+
+  async findPaymentsByContractId(id: string): Promise<Payment[] | undefined> {
+    try {
+      const payments = await paymentRepository.find({
+        where: { contract: {
+          id
+        },
+        
+       },
+       order: {
+        due_date: 'ASC',
+      },
+      });
+      return payments;
+    } catch (error) {
+      console.error('Error in findPaymentsByContractId:', error);
+      throw error; // Rejeitar o erro ou tratá-lo conforme a estratégia de tratamento de erros da sua aplicação
+    }
+  }
+
   
   
   
