@@ -44,7 +44,6 @@ export class ContractController {
     try {
       let { page, size, document_number } = req.query;
   
-      // Verifica se os parâmetros estão definidos em req.query
       page = page ? parseInt(page as string, 10) : 1; // Converte para número e define valor padrão 1 se não estiver definido
       size = size ? parseInt(size as string, 10) : 10; // Converte para número e define valor padrão 10 se não estiver definido
       document_number = document_number as string | undefined; // Mantém como string ou undefined se não estiver definido
@@ -76,5 +75,4 @@ export class ContractController {
       });
     }
   }
-  
 }
