@@ -25,6 +25,7 @@ Este projeto é uma API desenvolvida em Node.js com TypeScript e TypeORM para ge
    ```bash
    git clone https://github.com/seu-usuario/seu-projeto.git
    cd seu-projeto
+   npm install
 
 
 2. Rode o docker-compose.yml
