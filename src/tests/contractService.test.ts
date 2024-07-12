@@ -38,13 +38,13 @@ describe('ContractService', () => {
       ]
     };
 
-    // Mockando o retorno do findOne para simular a inexistência de um contrato
+    // Mockando o retorno do findOne 
     jest.spyOn(contractRepository, 'findOne').mockResolvedValueOnce(undefined as any);
 
-    // Mockando o retorno do save para simular a criação do contrato
+    // Mockando o retorno do save 
     (contractRepository.save as jest.Mock).mockResolvedValueOnce({} as any);
 
-    // Mockando o retorno do save do paymentRepository para simular a criação dos pagamentos
+    // Mockando o retorno do save do paymentRepository 
     (paymentRepository.save as jest.Mock).mockResolvedValueOnce({} as any);
 
     await service.execute(contratosDTO);
