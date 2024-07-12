@@ -30,7 +30,8 @@ Este projeto é uma API desenvolvida em Node.js com TypeScript e TypeORM para ge
 
 2. Rode o docker-compose.yml
 
-3. ## Exemplo de Dados de Contratos necessarios no envio da rota  /contract/sync, essa rota vai popular o banco de dados
+3 - A rota /contract/max-debt-history' do tipo GET, utilze para retornar a divida maxima /mes/ano, primeiro rode o passo 3.1 para popular o banco
+3.1 ## Exemplo de Dados de Contratos necessarios no envio da rota  /contract/sync, essa rota vai popular o banco de dados
 
 ```json
 {
